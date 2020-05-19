@@ -10,7 +10,7 @@ class Idread {
   /// 检测扫码结果数据
   static void dataStreamListen(dynamic success, {dynamic error}) {
     _eventChannel.receiveBroadcastStream().listen((data) {
-      success(IdCardInfoModel.fromJson(data));
+      success(data);
     }, onError: error);
   }
 
