@@ -13,7 +13,7 @@
 
 ### 加载依赖
 ```
-readqrcode:
+idread:
     git:
         https://github.com/hisan-web/flutter_id_read.git
 ```
@@ -22,7 +22,7 @@ readqrcode:
 ```
     Idread.init()  // 初始化sdk
     Idread.startRead() // 开始读卡
-    Idread.endRead() // 结束读卡
+    Idread.stopRead() // 结束读卡
     Idread.unInit() // 销毁sdk
 
     // 监听读卡数据
