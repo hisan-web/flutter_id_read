@@ -15,7 +15,7 @@ class IdCardInfoModel {
     this.wltData: null,
   });
 
-  factory IdCardInfoModel.fromJson(Map<String, dynamic> json) => IdCardInfoModel(
+  factory IdCardInfoModel.fromJson(Map json) => IdCardInfoModel(
     certType: json["certType"] == null ? "" : json["certType"],
     peopleName: json["peopleName"] == null ? "" : json["peopleName"],
     idCard: json["idCard"] == null ? "" : json["idCard"],
