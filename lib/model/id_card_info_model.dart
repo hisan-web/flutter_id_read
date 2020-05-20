@@ -6,6 +6,7 @@ class IdCardInfoModel {
   String idCard;
   String sex;
   Uint8List wltData;
+  String base64Image;
 
   IdCardInfoModel({
     this.certType: "",
@@ -13,6 +14,7 @@ class IdCardInfoModel {
     this.idCard: "",
     this.sex: "",
     this.wltData: null,
+    this.base64Image: ""
   });
 
   factory IdCardInfoModel.fromJson(Map json) => IdCardInfoModel(
@@ -20,7 +22,8 @@ class IdCardInfoModel {
     peopleName: json["peopleName"] == null ? "" : json["peopleName"],
     idCard: json["idCard"] == null ? "" : json["idCard"],
     sex: json["sex"] == null ? "" : json["sex"],
-    wltData: json["wltData"] == null ? null : json["wltData"]
+    wltData: json["wltData"] == null ? null : json["wltData"],
+    base64Image: json["base64Image"] == null ? "" : json["base64Image"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -28,6 +31,7 @@ class IdCardInfoModel {
     "contactName": peopleName == null ? null : peopleName,
     "mobile": idCard == null ? null : idCard,
     "address": sex == null ? null : sex,
-    "tag": wltData == null ? null : wltData
+    "tag": wltData == null ? null : wltData,
+    "base64Image": base64Image == null ? null : base64Image
   };
 }

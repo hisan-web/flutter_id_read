@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:idread/idread.dart';
+import 'package:idread/model/id_card_info_model.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  Uint8List _uint8list;
 
   @override
   void initState() {
@@ -37,7 +41,15 @@ class _MyAppState extends State<MyApp> {
       bool start = await Idread.startRead();
       if( start ) {
         Idread.dataStreamListen((data) {
-          print(data.toString());
+          if (data.wltData != null && mounted) {
+            setState(() {
+              _uint8list = Base64Decoder().convert(data.base64Image);
+            });
+
+            print(data.toString());
+            print(_uint8list);
+            return;
+          }
         });
       }
     }
@@ -51,7 +63,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: _uint8list == null ? Text('读取中') :Image.memory(_uint8list)
         ),
       ),
     );

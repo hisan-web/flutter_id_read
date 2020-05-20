@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.huashi.otg.sdk.HandlerMsg;
 import com.huashi.otg.sdk.HsOtgApi;
 import com.huashi.otg.sdk.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -61,20 +63,23 @@ public class IdreadPlugin implements FlutterPlugin, MethodCallHandler {
         output.put("peopleName", ic.getPeopleName());
         output.put("idCard", ic.getIDCard());
         output.put("sex", ic.getSex());
-        output.put("wltData", ic.getwltdata());
+        //
         byte[] bmpBuf = new byte[102 * 126 * 3 + 54 + 126 * 2]; // 照片头像bmp数据
         String bmpPath = "";
         int ret = api.unpack(ic.getwltdata(), bmpBuf, bmpPath);
         if (ret == 1) {//
-//          Bitmap bitmap = BitmapFactory.decodeByteArray(bmpBuf, 0,bmpBuf.length);
-//          Log.i(TAG, ""+bitmap);
-//          output.put("bitMap", bitmap);
-          output.put("wltData", ic.getwltdata());
+          Bitmap bitmap = BitmapFactory.decodeByteArray(bmpBuf, 0,bmpBuf.length);
+//          Log.i(TAG, "bitMap: "+bitmap);
+          String base64Image = bitmapToBase64(bitmap);
+//          Log.i(TAG, "base64Image: "+base64Image);
+          output.put("wltData", bmpBuf);
+          output.put("base64Image", base64Image);
         }
         streamHandlerImpl.eventSinkSuccess(output);
       }
     }
   };
+
 
   public static void registerWith(Registrar registrar) {
     final IdreadPlugin instance = new IdreadPlugin();
@@ -199,5 +204,40 @@ public class IdreadPlugin implements FlutterPlugin, MethodCallHandler {
         SystemClock.sleep(300);
       }
     }
+  }
+
+  /**
+   * bitmap转为base64
+   * @param bitmap
+   * @return
+   */
+  public String bitmapToBase64(Bitmap bitmap) {
+
+    String result = null;
+    ByteArrayOutputStream baos = null;
+    try {
+      if (bitmap != null) {
+        baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+        baos.flush();
+        baos.close();
+
+        byte[] bitmapBytes = baos.toByteArray();
+        result = new String(Base64.encode(bitmapBytes,Base64.NO_WRAP));
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (baos != null) {
+          baos.flush();
+          baos.close();
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    return result;
   }
 }
