@@ -41,6 +41,8 @@ public class IdreadPlugin implements FlutterPlugin, MethodCallHandler {
   private static final String METHOD_CHANNEL = "com.hs.flutter.idRead/MethodChannel";
   private static final String EVENT_CHANNEL = "com.hs.flutter.idRead/EventChannel";
 
+  private String filepath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/wltlib";
+
   private StreamHandlerImpl streamHandlerImpl;
   private Context context;
 
@@ -60,6 +62,15 @@ public class IdreadPlugin implements FlutterPlugin, MethodCallHandler {
         output.put("idCard", ic.getIDCard());
         output.put("sex", ic.getSex());
         output.put("wltData", ic.getwltdata());
+        byte[] bmpBuf = new byte[102 * 126 * 3 + 54 + 126 * 2]; // 照片头像bmp数据
+        String bmpPath = "";
+        int ret = api.unpack(ic.getwltdata(), bmpBuf, bmpPath);
+        if (ret == 1) {//
+//          Bitmap bitmap = BitmapFactory.decodeByteArray(bmpBuf, 0,bmpBuf.length);
+//          Log.i(TAG, ""+bitmap);
+//          output.put("bitMap", bitmap);
+          output.put("wltData", ic.getwltdata());
+        }
         streamHandlerImpl.eventSinkSuccess(output);
       }
     }
