@@ -22,11 +22,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     super.dispose();
-    Idread.stopRead();
     unInit();
   }
   
   Future<void> unInit() async {
+    await Idread.stopRead();
     await Idread.unInit();
   }
 
