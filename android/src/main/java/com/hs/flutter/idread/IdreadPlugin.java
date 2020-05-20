@@ -217,7 +217,7 @@ public class IdreadPlugin implements FlutterPlugin, MethodCallHandler {
     try {
       if (bitmap != null) {
         baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         baos.flush();
         baos.close();
         byte[] bitmapBytes = baos.toByteArray();
