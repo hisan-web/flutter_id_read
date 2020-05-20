@@ -211,18 +211,15 @@ public class IdreadPlugin implements FlutterPlugin, MethodCallHandler {
    * @param bitmap
    * @return
    */
-  public String bitmapToBase64(Bitmap bitmap) {
-
+  private String bitmapToBase64(Bitmap bitmap) {
     String result = null;
     ByteArrayOutputStream baos = null;
     try {
       if (bitmap != null) {
         baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         baos.flush();
         baos.close();
-
         byte[] bitmapBytes = baos.toByteArray();
         result = new String(Base64.encode(bitmapBytes,Base64.NO_WRAP));
       }
